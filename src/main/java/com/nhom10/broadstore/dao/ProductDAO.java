@@ -12,7 +12,7 @@ import java.util.List;
 
 @RegisterBeanMapper(Product.class)
 public interface ProductDAO {
-    @SqlQuery("select * from Product")
+    @SqlQuery("select * from product")
     List<Product> list();
 
     @SqlQuery("select * from Product WHERE id=:id")

@@ -9,26 +9,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProductService {
-    private static ProductService instance = null;
+
     Jdbi connect = JDBIConnector.get();
 
-    public ProductService() {
-    }
-
-    public static ProductService getInstance() {
-        if (instance == null)
-            instance = new ProductService();
-
-        return instance;
-    }
-
     public List<Product> list() {
-        List<Product> products = connect.withExtension(ProductDAO.class, handle -> handle.list());
+
+        List<Product> products = connect.withExtension(ProductDAO.class,
+                handle -> handle.list());
         return products.stream().map(product -> mapOtherBean(product)).collect(Collectors.toList());
     }
 
     public List<Product> listClient() {
-        List<Product> products = connect.withExtension(ProductDAO.class, handle -> handle.listClient());
+        connect.useExtension(ProductDAO.class, handle -> System.out.println(handle.list()));
+        List<Product> products = connect.withExtension(ProductDAO.class, ProductDAO::listClient);
         return products.stream().map(product -> mapOtherBean(product)).collect(Collectors.toList());
     }
 
@@ -75,7 +68,7 @@ public class ProductService {
     public Product getProductById(String id) {
         return connect.withExtension(ProductDAO.class, handle -> handle.findWithId(id));
     }
-    
+
     public List<Product> searchByName(String keyword) {
 
         return connect.withExtension(ProductDAO.class, handle -> handle.findByName("%" + keyword + "%"));

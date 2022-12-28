@@ -23,7 +23,7 @@ public class HeaderController extends HttpServlet {
         User user = (User) session.getAttribute(Define.userSession);
         String cartId = CartService.getInstance().getCart(user.getId()).getId();
         String productId = String.valueOf(request.getParameter("idproduct"));
-        Product product= ProductService.getInstance().getProductById(productId);
+        Product product= new ProductService().getProductById(productId);
         int qty = Integer.parseInt(request.getParameter("qty"));
         CartService.getInstance().insertCartItem(new CartItem(cartId, productId,qty, qty*product.getPrice()));
     }

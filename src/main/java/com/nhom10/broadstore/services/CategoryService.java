@@ -2,7 +2,6 @@ package com.nhom10.broadstore.services;
 
 import com.nhom10.broadstore.beans.Category;
 import com.nhom10.broadstore.dao.CategoryDAO;
-import com.nhom10.broadstore.dao.DiscountDAO;
 import com.nhom10.broadstore.db.JDBIConnector;
 import org.jdbi.v3.core.Jdbi;
 

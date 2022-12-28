@@ -34,7 +34,7 @@ public class AddToCartController extends HttpServlet {
 
             Cart cart = CartService.getInstance().getCart(user.getId());
             String productId = String.valueOf(request.getParameter("productId"));
-            Product product = ProductService.getInstance().findById(productId);
+            Product product = new ProductService().findById(productId);
 
             List<CartItem> cartItems = cart.getCartItemList();
 
