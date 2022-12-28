@@ -23,12 +23,7 @@ import java.util.List;
 public class DashBoardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(true);
-        User user = (User) session.getAttribute(Define.userSession);
-        if(user==null || user.getRole()== Role.CUSTOMER){
-            resp.sendRedirect("Login");
-            return;
-        }
+        
         OrderServices orderServices = new OrderServices();
         List<Order> orders = orderServices.list();
         int countOrder = orders.size();

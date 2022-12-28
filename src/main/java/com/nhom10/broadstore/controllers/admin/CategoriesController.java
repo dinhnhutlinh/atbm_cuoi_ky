@@ -1,7 +1,6 @@
 package com.nhom10.broadstore.controllers.admin;
 
 import com.nhom10.broadstore.beans.User;
-import com.nhom10.broadstore.emun.Role;
 import com.nhom10.broadstore.util.Define;
 
 import javax.servlet.RequestDispatcher;
@@ -17,12 +16,7 @@ import java.io.IOException;
 public class CategoriesController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(true);
-        User user = (User) session.getAttribute(Define.userSession);
-        if(user==null || user.getRole()== Role.CUSTOMER){
-            resp.sendRedirect("Login");
-            return;
-        }
+
 
         RequestDispatcher rd = req.getRequestDispatcher("admin/categories.jsp");
         rd.forward(req, resp);
@@ -32,7 +26,7 @@ public class CategoriesController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         User user = (User) session.getAttribute(Define.userSession);
-        if(user==null){
+        if (user == null) {
             resp.sendRedirect("Login");
             return;
         }
