@@ -17,12 +17,7 @@ import java.io.IOException;
 public class OrderManagerController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(true);
-        User user = (User) session.getAttribute(Define.userSession);
-        if(user==null || user.getRole()== Role.CUSTOMER){
-            resp.sendRedirect("Login");
-            return;
-        }
+        
         req.setAttribute("mapStatus", OrderStatus.mapOrderStatus());
         RequestDispatcher rd = req.getRequestDispatcher("admin/orders.jsp");
         rd.forward(req, resp);

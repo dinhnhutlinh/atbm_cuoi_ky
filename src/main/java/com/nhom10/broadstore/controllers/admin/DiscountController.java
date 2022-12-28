@@ -18,12 +18,7 @@ public class DiscountController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(true);
-        User user = (User) session.getAttribute(Define.userSession);
-        if(user==null || user.getRole()== Role.CUSTOMER){
-            resp.sendRedirect("Login");
-            return;
-        }
+        
         RequestDispatcher rd = req.getRequestDispatcher("admin/discounts.jsp");
         rd.forward(req, resp);
     }

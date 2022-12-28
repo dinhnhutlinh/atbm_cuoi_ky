@@ -5,7 +5,10 @@ import com.nhom10.broadstore.beans.OrderItem;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -93,15 +96,66 @@ public class MailHelper {
                 "<td style=\"padding: 0 15px;\">:quantity</td>\n" +
                 "<td style=\"padding: 0 0 0 15px;\" align=\"right\">$:price</td>\n" +
                 "</tr>";
-        String lisItemHtml = "";
+        StringBuilder lisItemHtml = new StringBuilder();
         for (OrderItem item : itemList) {
-            lisItemHtml += itemHtml.replaceAll(":item", item.getProduct().getName())
+            lisItemHtml.append(itemHtml.replaceAll(":item", item.getProduct().getName())
                     .replaceAll(":quantity", item.getQuantity() + "")
-                    .replaceAll(":price", item.getPrice() + "");
+                    .replaceAll(":price", item.getPrice() + ""));
         }
-        content = content.replaceAll(":listItem:", lisItemHtml);
+        content = content.replaceAll(":listItem:", lisItemHtml.toString());
         content = content.replaceAll(":ship:", order.getShipPrice() + "");
         content = content.replaceAll(":total:", 0 + "");
         sendMail("", to, from, "Order", content, true);
+    }
+
+    public String sendMailWithFile(String id, String to, String from,
+                                   String subject, File file) throws MessagingException, IOException {
+        String status = null;
+
+        // acquire a secure SMTPs session
+        Properties pros = new Properties();
+        pros.put("mail.transport.protocol", "smtps");
+        pros.put("mail.smtps.host", "smtp.gmail.com");
+        pros.put("mail.smtps.port", 465);
+        pros.put("mail.smtps.auth", "true");
+        pros.put("mail.smtps.quitwait", "false");
+        Session session
+                = Session.getDefaultInstance(pros);
+        session.setDebug(true);
+        // Wrap a message in session
+        Message message = new MimeMessage(session);
+        Address sender = new InternetAddress(from, id);
+        Address receiver = new InternetAddress(to);
+        message.setFrom(sender);
+        message.setRecipient(Message.RecipientType.TO,
+                receiver);
+        message.setSubject(subject);
+        BodyPart messageBodyPart = new MimeBodyPart();
+        messageBodyPart.setText(subject);
+        MimeBodyPart attachmentPart = new MimeBodyPart();
+        attachmentPart.attachFile(file);
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(messageBodyPart);
+        multipart.addBodyPart(attachmentPart);
+        message.setContent(multipart, "text/html");
+
+        // specify E-mail address of Sender and Receiver
+
+        // sending an E-mail
+        try (Transport tt = session.getTransport()) {
+            // acqruiring a connection to remote server
+            tt.connect(from, pass);
+            tt.sendMessage(message,
+                    message.getAllRecipients());
+            status = "E-Mail Sent Successfully";
+        }
+
+        // return the status of email
+        return status;
+    }
+
+    public static void main(String[] args) throws MessagingException, IOException {
+        MailHelper mailHelper= new MailHelper();
+        mailHelper.sendMailWithFile("","linhdinh86a@gmail.com",from,"test",new File("README.md"));
     }
 }

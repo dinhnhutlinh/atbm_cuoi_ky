@@ -1,6 +1,5 @@
 package com.nhom10.broadstore.beans;
 
-import com.nhom10.broadstore.emun.Role;
 import com.nhom10.broadstore.services.CartService;
 
 import java.time.LocalDateTime;
@@ -19,12 +18,12 @@ public class User {
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private int active;
-    private Role role;
+    private int role;
 
     public User() {
     }
 
-    public User(String id, String lastName, String firstName, String avatar, String password, String address, String phone, String mail, LocalDateTime createAt, LocalDateTime updateAt, int active, Role role) {
+    public User(String id, String lastName, String firstName, String avatar, String password, String address, String phone, String mail, LocalDateTime createAt, LocalDateTime updateAt, int active, int role) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -131,11 +130,11 @@ public class User {
         this.active = active;
     }
 
-    public Role getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(int role) {
         this.role = role;
     }
 

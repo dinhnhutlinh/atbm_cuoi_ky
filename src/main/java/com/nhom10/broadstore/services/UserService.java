@@ -3,12 +3,10 @@ package com.nhom10.broadstore.services;
 import com.nhom10.broadstore.beans.User;
 import com.nhom10.broadstore.dao.UserDAO;
 import com.nhom10.broadstore.db.JDBIConnector;
-import com.nhom10.broadstore.emun.Role;
 import org.jdbi.v3.core.Jdbi;
 
 import java.security.GeneralSecurityException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserService {
 
@@ -17,17 +15,10 @@ public class UserService {
     public User login(String email, String password) throws GeneralSecurityException {
         return connector.withExtension(UserDAO.class, handle -> {
             User user;
-
-            if ((user = handle.loginAdmin(email, password)) != null) {
-                user.setRole(Role.ADMIN);
+            if ((user = handle.loginAdmin(email, password)) != null)
                 return user;
-            }
-
             String hashPassCustomer = PasswordHash.createHash(password);
             user = handle.loginCustomer(email, hashPassCustomer);
-            if (user != null)
-                user.setRole(Role.CUSTOMER);
-
             return user;
         });
     }
@@ -50,19 +41,12 @@ public class UserService {
     }
 
     public List<User> listCustomer() {
-        return connector.withExtension(UserDAO.class, handle ->
-                handle.listCustomer().stream().map(user -> {
-                    user.setRole(Role.CUSTOMER);
-                    return user;
-                }).collect(Collectors.toList()));
+        return connector.withExtension(UserDAO.class, UserDAO::listCustomer
+        );
     }
 
     public List<User> listAdmin() {
-        return connector.withExtension(UserDAO.class, handle ->
-                handle.listAdmin().stream().map(user -> {
-                    user.setRole(Role.ADMIN);
-                    return user;
-                }).collect(Collectors.toList()));
+        return connector.withExtension(UserDAO.class, UserDAO::listAdmin);
     }
 
     public int deleteAdmin(String id) {
@@ -101,5 +85,15 @@ public class UserService {
                 , handle -> handle.changePasswordCustomer(id, password));
         connector.useExtension(UserDAO.class
                 , handle -> handle.changePasswordAdmin(id, password));
+    }
+
+    public boolean checkPassword(String userId, String password) {
+        return connector.withExtension(UserDAO.class
+                , handle -> handle.checkPassword(userId, password) != null);
+    }
+
+    public void updatePublicKey(String id, String publicKeyString) {
+        connector.useExtension(UserDAO.class
+                , handle -> handle.updatePublicKey(id, publicKeyString));
     }
 }
