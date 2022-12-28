@@ -13,17 +13,14 @@ import java.util.List;
 @RegisterBeanMapper(Category.class)
 public interface CategoryDAO {
 
-    @SqlQuery("select *\n" +
-            "from Category")
+    @SqlQuery("select * from category")
     List<Category> list();
 
     @SqlQuery("select *\n" +
-            "from Category WHERE id=:id")
+            "from category WHERE id=:id")
     Category findById(@Bind("id") String id);
 
-    @SqlUpdate("delete\n" +
-            "from Category\n" +
-            "where id=:id")
+    @SqlUpdate("delete from category where id=:id")
     int deleteById(@Bind("id") String id);
 
     @SqlUpdate("insert into Category (`id`, `name`, `desc`, `create_at`, `update_at`) values (:id, :name, :desc, now(), now())")

@@ -20,7 +20,7 @@ public class SeeMoreProduct extends HttpServlet {
       int from=countProduct;
         List<Product> list = null;
         PrintWriter pr = response.getWriter();
-        list= ProductService.getInstance().list();
+        list= new ProductService().list();
         for (int i = from; i < from+9; i++
         ) {
             Product p= list.get(i);

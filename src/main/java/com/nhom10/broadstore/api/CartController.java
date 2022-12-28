@@ -23,8 +23,11 @@ public class CartController extends HttpServlet {
         PrintWriter printWriter = resp.getWriter();
         HttpSession session = req.getSession(true);
         User user = (User) session.getAttribute(Define.userSession);
-        Cart cart = CartService.getInstance().getCart(user.getId());
-        printWriter.println(new JsonUtil().toJSon(cart));
+        if(user!=null){
+            Cart cart = CartService.getInstance().getCart(user.getId());
+            printWriter.println(new JsonUtil().toJSon(cart));
+        }
+
         printWriter.close();
     }
 
@@ -42,7 +45,7 @@ public class CartController extends HttpServlet {
         User user = (User) session.getAttribute(Define.userSession);
         Cart cart = CartService.getInstance().getCart(user.getId());
 
-        Product product = ProductService.getInstance().findById(productId);
+        Product product = new ProductService().findById(productId);
 
         List<CartItem> cartItems = cart.getCartItemList();
 

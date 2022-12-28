@@ -49,12 +49,12 @@
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-core</artifactId>
-            <version>3.27.0</version>
+            <version>3.35.0</version>
         </dependency>
         <dependency>
             <groupId>org.jdbi</groupId>
             <artifactId>jdbi3-sqlobject</artifactId>
-            <version>3.27.0</version>
+            <version>3.35.0</version>
         </dependency>
         <dependency>
             <groupId>jstl</groupId>
@@ -96,14 +96,14 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                </configuration>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>11</source>-->
+<!--                    <target>11</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
 
     </build>
