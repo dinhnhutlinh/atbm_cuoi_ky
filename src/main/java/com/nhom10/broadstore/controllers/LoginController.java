@@ -2,7 +2,6 @@ package com.nhom10.broadstore.controllers;
 
 import com.nhom10.broadstore.beans.User;
 import com.nhom10.broadstore.services.UserService;
-import com.nhom10.broadstore.util.Define;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -43,12 +42,14 @@ public class LoginController extends HttpServlet {
                 rd.forward(req, resp);
             } else {
                 HttpSession session = req.getSession(true);
-                session.setAttribute(Define.userSession, user);
-                if (user.getRole() == 0) {
-                    resp.sendRedirect("dashboard");
-                } else {
-                    resp.sendRedirect("Home");
-                }
+//                session.setAttribute(Define.userSession, user);
+//                if (user.getRole() == 0) {
+//                    resp.sendRedirect("dashboard");
+//                } else {
+//                    resp.sendRedirect("Home");
+//                }
+
+                resp.sendRedirect("check_token?id=" + user.getId());
             }
         } else {
             req.setAttribute("mess", "Don't have account with your email!!!");

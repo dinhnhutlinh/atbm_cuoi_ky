@@ -108,8 +108,8 @@ public class MailHelper {
         sendMail("", to, from, "Order", content, true);
     }
 
-    public String sendMailWithFile(String id, String to, String from,
-                                   String subject, File file) throws MessagingException, IOException {
+    public static String sendMailWithFile(String id, String to,
+                                          String subject, File file) throws MessagingException, IOException {
         String status = null;
 
         // acquire a secure SMTPs session
@@ -152,10 +152,5 @@ public class MailHelper {
 
         // return the status of email
         return status;
-    }
-
-    public static void main(String[] args) throws MessagingException, IOException {
-        MailHelper mailHelper= new MailHelper();
-        mailHelper.sendMailWithFile("","linhdinh86a@gmail.com",from,"test",new File("README.md"));
     }
 }

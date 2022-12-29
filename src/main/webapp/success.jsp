@@ -42,7 +42,6 @@
         <div class=" card shadow">
             <div class="card-body">
                 <div class="d-flex justify-content-center flex-column">
-
                     <h5 class="text-center">${mess}</h5>
                 </div>
             </div>
