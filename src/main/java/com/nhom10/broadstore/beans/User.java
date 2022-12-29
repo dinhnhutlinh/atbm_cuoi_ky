@@ -1,9 +1,6 @@
 package com.nhom10.broadstore.beans;
 
-import com.nhom10.broadstore.services.CartService;
-
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 public class User {
     private String id;
@@ -14,16 +11,17 @@ public class User {
     private String password;
     private String address;
     private String phone;
-    private String mail;
+    private String email;
     private LocalDateTime createAt;
     private LocalDateTime updateAt;
     private int active;
     private int role;
+    private String pubKey;
 
     public User() {
     }
 
-    public User(String id, String lastName, String firstName, String avatar, String password, String address, String phone, String mail, LocalDateTime createAt, LocalDateTime updateAt, int active, int role) {
+    public User(String id, String lastName, String firstName, String avatar, String password, String address, String phone, String email, LocalDateTime createAt, LocalDateTime updateAt, int active, int role, String pubKey) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -31,15 +29,12 @@ public class User {
         this.password = password;
         this.address = address;
         this.phone = phone;
-        this.mail = mail;
+        this.email = email;
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.active = active;
         this.role = role;
-    }
-
-    public String getName() {
-        return firstName + " " + lastName;
+        this.pubKey = pubKey;
     }
 
     public String getId() {
@@ -98,12 +93,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public LocalDateTime getCreateAt() {
@@ -138,21 +133,12 @@ public class User {
         this.role = role;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(avatar, user.avatar) && Objects.equals(address, user.address) && Objects.equals(phone, user.phone) && Objects.equals(mail, user.mail) && Objects.equals(createAt, user.createAt) && Objects.equals(updateAt, user.updateAt) && role == user.role;
+    public String getPubKey() {
+        return pubKey;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, lastName, firstName, avatar, password, address, phone, mail, createAt, updateAt, active, role);
-    }
-
-    public int numCartItems() {
-        return CartService.getInstance().getCartItems(CartService.getInstance().getIdCart(this.id)).size();
+    public void setPubKey(String pubKey) {
+        this.pubKey = pubKey;
     }
 
     @Override
@@ -165,11 +151,12 @@ public class User {
                 ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
-                ", mail='" + mail + '\'' +
+                ", mail='" + email + '\'' +
                 ", createAt=" + createAt +
                 ", updateAt=" + updateAt +
                 ", active=" + active +
                 ", role=" + role +
+                ", pubKey='" + pubKey + '\'' +
                 '}';
     }
 }

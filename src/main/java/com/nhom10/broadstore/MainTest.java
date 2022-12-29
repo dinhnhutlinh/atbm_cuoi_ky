@@ -1,6 +1,7 @@
 package com.nhom10.broadstore;
 
 import com.nhom10.broadstore.dao.ProductDAO;
+import com.nhom10.broadstore.dao.UserDAO;
 import com.nhom10.broadstore.db.JDBIConnector;
 import com.nhom10.broadstore.services.ProductService;
 import org.jdbi.v3.core.Jdbi;
@@ -11,8 +12,8 @@ import java.security.spec.InvalidKeySpecException;
 public class MainTest {
     public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
         Jdbi jdbi = JDBIConnector.get();
-        jdbi.useExtension(ProductDAO.class, handle -> {
-            System.out.println(handle.list());
+        jdbi.useExtension(UserDAO.class, handle -> {
+            System.out.println(handle.findById("qvsruunkns"));
         });
     }
 

@@ -96,4 +96,9 @@ public class UserService {
         connector.useExtension(UserDAO.class
                 , handle -> handle.updatePublicKey(id, publicKeyString));
     }
+
+    public User findById(String parseInt) {
+        return connector.withExtension(UserDAO.class
+                , handle -> handle.findById(parseInt));
+    }
 }

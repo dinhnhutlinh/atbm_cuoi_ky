@@ -59,4 +59,7 @@ public interface UserDAO {
 
     @SqlQuery("SELECT pub_key FROM user where id=:id")
     String getPublicKey(@Bind("id") String id);
+
+    @SqlQuery("SELECT * FROM user where id=:id and active=1")
+    User findById(@Bind("id") String parseInt);
 }

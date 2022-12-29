@@ -65,8 +65,8 @@ public class SignUpPage extends HttpServlet {
 
             User user;
             try {
-                user = new User(StringUtil.genIDWithLength(10), lastName, firstName, "img/avatar.png", PasswordHash.createHash(password), "", request.getParameter("phone"), email, null, null, 0, 1);
-                MailHelper.sendActiveUserMail(user.getMail(), Define.domain + "active?id=" + user.getId());
+                user = new User(StringUtil.genIDWithLength(10), lastName, firstName, "img/avatar.png", PasswordHash.createHash(password), "", request.getParameter("phone"), email, null, null, 0, 1,null);
+                MailHelper.sendActiveUserMail(user.getEmail(), Define.domain + "active?id=" + user.getId());
                 request.setAttribute("mess", "Check your mail to active");
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);

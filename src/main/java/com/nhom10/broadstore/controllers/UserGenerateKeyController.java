@@ -3,6 +3,7 @@ package com.nhom10.broadstore.controllers;
 import com.nhom10.broadstore.beans.User;
 import com.nhom10.broadstore.services.UserService;
 import com.nhom10.broadstore.util.Define;
+import com.nhom10.broadstore.util.SecurityUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,19 +20,29 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Base64;
 
-@WebServlet(urlPatterns = "new_key")
+@WebServlet(urlPatterns = "/new_key")
 public class UserGenerateKeyController extends HttpServlet {
     UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("user/error_page.jsp").forward(req, resp);
+        HttpSession session = req.getSession(true);
+        User user = (User) session.getAttribute(Define.userSession);
+        if (user == null) {
+            resp.sendRedirect("Login");
+            return;
+        }
+        req.getRequestDispatcher("user/new_key.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(true);
         User user = (User) session.getAttribute(Define.userSession);
+        if (user == null) {
+            resp.sendRedirect("Login");
+            return;
+        }
         String password = req.getParameter("password");
 
         if (userService.checkPassword(user.getId(), password)) {
@@ -46,21 +57,24 @@ public class UserGenerateKeyController extends HttpServlet {
                 File file = new File(uploads, user.getId() + ".priv");
 
                 PrintWriter writer = new PrintWriter(file, "UTF-8");
-                String line = Base64.getEncoder().encodeToString(privateKey.getEncoded());
-                writer.write(line);
+                String privateKeyString = SecurityUtil.base64FromPrivateKey(privateKey);
+                writer.write(privateKeyString);
                 writer.close();
-
-                String filePath = file.getPath();
 
                 String publicKeyString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 
                 userService.updatePublicKey(user.getId(), publicKeyString);
 
-                req.setAttribute("message", "Tạo khóa thành công");
+                req.setAttribute("mess", "Tạo khóa thành công" +
+                        "Vui lòng lưu lại khóa riêng tư và khóa sẽ được tới email bạn");
+                req.getRequestDispatcher("success.jsp").forward(req, resp);
             } catch (Exception e) {
-                e.printStackTrace();
+                req.setAttribute("mess", "Error");
+                req.getRequestDispatcher("user/new_key.jsp").forward(req, resp);
             }
+        } else {
+            req.setAttribute("mess", "Password dont correct");
+            req.getRequestDispatcher("user/new_key.jsp").forward(req, resp);
         }
-
     }
 }
