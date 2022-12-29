@@ -10,11 +10,12 @@ import java.util.Base64;
 
 public class SignFile {
     public PrivateKey readPriKey(String path) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
-        byte[] key = Files.readAllBytes(Paths.get(path));
-        PKCS8EncodedKeySpec priKeySpec = new PKCS8EncodedKeySpec(key);
+        BufferedReader br = new BufferedReader(new FileReader(path));
+        String line = br.readLine();
+        byte[] decodedBytes = Base64.getDecoder().decode(line);
+        PKCS8EncodedKeySpec priKeySpec = new PKCS8EncodedKeySpec(decodedBytes);
         KeyFactory keyFactory = KeyFactory.getInstance("DSA", "SUN");
         PrivateKey priKey = keyFactory.generatePrivate(priKeySpec);
-        System.out.println(Base64.getEncoder().encodeToString(priKey.getEncoded()));
         return priKey;
     }
 
@@ -47,6 +48,29 @@ public class SignFile {
         byte[] realSig = dsa.sign();
         return Base64.getEncoder().encodeToString(realSig);
     }
+
+    public String signText(String text, String pathKey)
+            throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException, SignatureException,
+            IOException, InvalidKeySpecException {
+
+        /* Create a Signature object and initialize it with the private key */
+        Signature dsa = Signature.getInstance("SHA256withDSA", "SUN");
+
+        dsa.initSign(readPriKey(pathKey));
+
+        /* Update and sign the data */
+        byte[] bytes = text.getBytes();
+        dsa.update(bytes);
+
+        /*
+         * Now that all the data to be signed has been read in,
+         * generate a signature for it
+         */
+        byte[] realSig = dsa.sign();
+        return Base64.getEncoder().encodeToString(realSig);
+    }
+
+
 
     public void saveSignature(String pathSignature, String signature) throws FileNotFoundException {
         /* Save the signature in a file */

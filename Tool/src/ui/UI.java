@@ -1,5 +1,8 @@
+
 package ui;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,10 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
 import java.security.spec.InvalidKeySpecException;
-import javax.swing.*;
-import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class UI extends JFrame {
     private String pathFile = "";
@@ -57,7 +56,7 @@ public class UI extends JFrame {
         }
         keyInput.setText(pathKey);
     }
-    public void sign() throws NoSuchAlgorithmException, SignatureException, IOException, InvalidKeySpecException, NoSuchProviderException, InvalidKeyException {
+    public void signFile() throws NoSuchAlgorithmException, SignatureException, IOException, InvalidKeySpecException, NoSuchProviderException, InvalidKeyException {
         String text1 = fileInput.getText();
         String text2 = keyInput.getText();
 
@@ -78,6 +77,26 @@ public class UI extends JFrame {
         saveBtn.setEnabled(true);
     }
 
+    public void signText() throws NoSuchAlgorithmException, SignatureException, IOException, InvalidKeySpecException, NoSuchProviderException, InvalidKeyException {
+        String text1 = textInput.getText();
+        String text2 = keyInput.getText();
+        File key = new File(text2);
+        if (text1.equals("")) {
+            JOptionPane.showMessageDialog(null,"Enter text to sign");
+            return;
+        }
+
+        if (!key.exists() || !key.isFile()) {
+            JOptionPane.showMessageDialog(null,"Enter your key");
+            return;
+        }
+
+        SignFile signFile = new SignFile();
+        signature = signFile.signText(text1, text2);
+        signArea.setText(signature);
+        saveBtn.setEnabled(true);
+    }
+
     public void clear() {
         pathFile = "";
         pathKey = "";
@@ -85,6 +104,7 @@ public class UI extends JFrame {
         fileInput.setText(pathFile);
         keyInput.setText(pathKey);
         signArea.setText(signature);
+        textInput.setText("");
         saveBtn.setEnabled(false);
     }
 
@@ -109,78 +129,81 @@ public class UI extends JFrame {
             e.printStackTrace();
         }
     }
-
-
     private void initComponents() {
-        label1 = new JLabel();
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents  @formatter:off
+        // Generated using JFormDesigner Evaluation license - unknown
         label2 = new JLabel();
         fileInput = new JTextField();
-        keyInput = new JTextField();
         selectFileBtn = new JButton();
-        selectKeyBtn = new JButton();
-        signBtn = new JButton();
-        clearBtn = new JButton();
-        scrollPane1 = new JScrollPane();
-        signArea = new JTextArea();
         label3 = new JLabel();
+        scrollPane1 = new JScrollPane();
+        textInput = new JTextArea();
+        label4 = new JLabel();
+        keyInput = new JTextField();
+        selectKeyBtn = new JButton();
+        scrollPane2 = new JScrollPane();
+        signArea = new JTextArea();
+        signFileBtn = new JButton();
+        clearBtn = new JButton();
+        label5 = new JLabel();
+        signTextBtn = new JButton();
         saveBtn = new JButton();
 
         //======== this ========
         setTitle("Signature digital tool");
-        Container contentPane = getContentPane();
-
-        //---- label1 ----
-        label1.setText("Select file to sign");
-        label1.setAutoscrolls(true);
+        var contentPane = getContentPane();
 
         //---- label2 ----
-        label2.setText("Select your key");
-        label2.setMaximumSize(new Dimension(89, 16));
+        label2.setText("Select file to sign:");
 
         //---- fileInput ----
-        fileInput.setAlignmentX(0.0F);
-        fileInput.setMaximumSize(new Dimension(89, 16));
-        fileInput.setEditable(false);
         fileInput.setEnabled(false);
+        fileInput.setEditable(false);
         fileInput.setBackground(Color.white);
 
+        //---- selectFileBtn ----
+        selectFileBtn.setText("Browser");
+
+        //---- label3 ----
+        label3.setText("Or enter text to sign:");
+
+        //======== scrollPane1 ========
+        {
+            scrollPane1.setViewportView(textInput);
+        }
+
+        //---- label4 ----
+        label4.setText("Select your key:");
+
         //---- keyInput ----
-        keyInput.setMaximumSize(new Dimension(89, 16));
         keyInput.setEditable(false);
         keyInput.setEnabled(false);
         keyInput.setBackground(Color.white);
 
-        //---- selectFileBtn ----
-        selectFileBtn.setText("Browser");
-        selectFileBtn.setHorizontalAlignment(SwingConstants.LEADING);
-        selectFileBtn.setAutoscrolls(true);
-        selectFileBtn.setMaximumSize(new Dimension(89, 16));
-
         //---- selectKeyBtn ----
         selectKeyBtn.setText("Browser");
-        selectKeyBtn.setHorizontalAlignment(SwingConstants.LEADING);
-        selectKeyBtn.setMaximumSize(new Dimension(89, 16));
 
-        //---- signBtn ----
-        signBtn.setText("Sign");
-        signBtn.setMaximumSize(new Dimension(89, 16));
-
-        //---- clearBtn ----
-        clearBtn.setText("Clear");
-        clearBtn.setMaximumSize(new Dimension(89, 16));
-
-        //======== scrollPane1 ========
+        //======== scrollPane2 ========
         {
 
             //---- signArea ----
             signArea.setEditable(false);
-            signArea.setBackground(Color.white);
             signArea.setLineWrap(true);
-            scrollPane1.setViewportView(signArea);
+            signArea.setBackground(Color.white);
+            scrollPane2.setViewportView(signArea);
         }
 
-        //---- label3 ----
-        label3.setText("Signature");
+        //---- signFileBtn ----
+        signFileBtn.setText("Sign file");
+
+        //---- clearBtn ----
+        clearBtn.setText("Clear");
+
+        //---- label5 ----
+        label5.setText("Signature");
+
+        //---- signTextBtn ----
+        signTextBtn.setText("Sign text");
 
         //---- saveBtn ----
         saveBtn.setText("Save signature");
@@ -193,57 +216,64 @@ public class UI extends JFrame {
                         .addGroup(contentPaneLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addComponent(label5)
                                         .addGroup(contentPaneLayout.createSequentialGroup()
-                                                .addGroup(contentPaneLayout.createParallelGroup()
-                                                        .addGroup(contentPaneLayout.createSequentialGroup()
-                                                                .addGroup(contentPaneLayout.createParallelGroup()
-                                                                        .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                                                .addComponent(label1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                                                .addComponent(label2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                                                        .addComponent(signBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                                                .addGroup(contentPaneLayout.createParallelGroup()
-                                                                        .addGroup(contentPaneLayout.createSequentialGroup()
-                                                                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                                                        .addComponent(fileInput, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
-                                                                                        .addComponent(keyInput, GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE))
-                                                                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                                                .addGroup(contentPaneLayout.createParallelGroup()
-                                                                                        .addComponent(selectFileBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                                                        .addComponent(selectKeyBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                                                        .addComponent(clearBtn, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-                                                        .addComponent(label3))
-                                                .addGap(0, 1, Short.MAX_VALUE))
-                                        .addComponent(scrollPane1, GroupLayout.DEFAULT_SIZE, 396, Short.MAX_VALUE)
-                                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                                .addGap(0, 324, Short.MAX_VALUE)
-                                                .addComponent(saveBtn)))
+                                                .addComponent(signFileBtn)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(signTextBtn)
+                                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(clearBtn))
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(label2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(label3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                .addGap(3, 3, 3)
+                                                .addComponent(fileInput, GroupLayout.PREFERRED_SIZE, 283, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(selectFileBtn))
+                                        .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(contentPaneLayout.createSequentialGroup()
+                                                .addComponent(label4, GroupLayout.PREFERRED_SIZE, 95, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(3, 3, 3)
+                                                .addComponent(keyInput, GroupLayout.PREFERRED_SIZE, 300, GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(selectKeyBtn))
+                                        .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 487, GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(saveBtn)
                                 .addContainerGap())
         );
         contentPaneLayout.setVerticalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(contentPaneLayout.createSequentialGroup()
-                                .addContainerGap()
+                                .addGap(14, 14, 14)
                                 .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(label1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(fileInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(selectFileBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(label2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(keyInput, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(selectKeyBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                        .addComponent(signBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(clearBtn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(label3)
+                                        .addComponent(label2, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(fileInput, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(selectFileBtn, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(label3, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(scrollPane1, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(contentPaneLayout.createParallelGroup()
+                                        .addComponent(label4, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(keyInput, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(selectKeyBtn, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                        .addComponent(signFileBtn)
+                                        .addComponent(signTextBtn)
+                                        .addComponent(clearBtn))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(label5)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(scrollPane2, GroupLayout.PREFERRED_SIZE, 71, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(saveBtn)
-                                .addGap(8, 8, 8))
+                                .addContainerGap())
         );
         selectFileBtn.addActionListener(new ActionListener() {
             @Override
@@ -257,11 +287,22 @@ public class UI extends JFrame {
                 selectKeyToSign();
             }
         });
-        signBtn.addActionListener(new ActionListener() {
+        signFileBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    sign();
+                    signFile();
+                } catch (NoSuchAlgorithmException | SignatureException | IOException | InvalidKeySpecException |
+                        NoSuchProviderException | InvalidKeyException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        signTextBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    signText();
                 } catch (NoSuchAlgorithmException | SignatureException | IOException | InvalidKeySpecException |
                         NoSuchProviderException | InvalidKeyException ex) {
                     ex.printStackTrace();
@@ -271,13 +312,13 @@ public class UI extends JFrame {
         clearBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               clear();
+                clear();
             }
         });
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               saveSignature();
+                saveSignature();
             }
         });
         pack();
@@ -286,19 +327,22 @@ public class UI extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables  @formatter:off
-    // Generated using JFormDesigner Evaluation license - Ph?m Anh Tu?n
-    private JLabel label1;
+    // Generated using JFormDesigner Evaluation license - unknown
     private JLabel label2;
     private JTextField fileInput;
-    private JTextField keyInput;
     private JButton selectFileBtn;
-    private JButton selectKeyBtn;
-    private JButton signBtn;
-    private JButton clearBtn;
-    private JScrollPane scrollPane1;
-    private JTextArea signArea;
     private JLabel label3;
+    private JScrollPane scrollPane1;
+    private JTextArea textInput;
+    private JLabel label4;
+    private JTextField keyInput;
+    private JButton selectKeyBtn;
+    private JScrollPane scrollPane2;
+    private JTextArea signArea;
+    private JButton signFileBtn;
+    private JButton clearBtn;
+    private JLabel label5;
+    private JButton signTextBtn;
     private JButton saveBtn;
     // JFormDesigner - End of variables declaration  //GEN-END:variables  @formatter:on
 }
-
