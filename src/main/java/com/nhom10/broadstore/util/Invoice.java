@@ -10,6 +10,7 @@ import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Invoice {
     Integer price;
     String custName;
     String custPh;
+    String cusAddress;
     List<String> productName = new ArrayList<String>();
     List<Integer> productPrice = new ArrayList<Integer>();
     List<Integer> productQty = new ArrayList<Integer>();
@@ -28,37 +30,22 @@ public class Invoice {
     PDFont font;
 
     //Using the constructor to create a PDF with a blank page
-    public Invoice() throws IOException {
+    public Invoice(String pathTtf) throws IOException {
         //Create Document
         invc = new PDDocument();
         //Create Blank Page
         PDPage newpage = new PDPage();
         //Add the blank page
         invc.addPage(newpage);
-        font = PDType0Font.load(invc, new File("times.ttf"));
+
+        font = PDType0Font.load(invc, new File(pathTtf));
     }
 
-    public static void main(String args[]) throws IOException {
-        // lấy order từ database
-        // tạo invoice
-        // gọi hàm getData
-        // gọi hàm writeInvoice
+    public void getdata(Order order) {
 
-        Invoice i = new Invoice();
-        OrderServices orderServices = new OrderServices();
-        Order order = orderServices.findById("qmfvdsympt");
-        i.getdata(order);
-        i.writeInvoice("invoice.pdf");
-        System.out.println("Invoice Generated!");
-    }
-
-    void getdata(Order order) {
-
-        System.out.println("Enter the Customer Name: ");
         custName = order.getName();
-        System.out.println("Enter the Customer Phone Number: ");
         custPh = order.getPhone();
-        System.out.println("Enter the Number of Products: ");
+        cusAddress=order.getAddress();
         n = order.getOrderItems().size();
         System.out.println();
         for (int i = 0; i < n; i++) {
@@ -73,7 +60,7 @@ public class Invoice {
         }
     }
 
-    void writeInvoice(String filePath) {
+   public void writeInvoice(String filePath) {
         //get the page
         PDPage mypage = invc.getPage(0);
         try {
@@ -103,6 +90,8 @@ public class Invoice {
             cs.showText("Customer Name: ");
             cs.newLine();
             cs.showText("Phone Number: ");
+            cs.newLine();
+            cs.showText("Address: ");
             cs.endText();
 
             cs.beginText();
@@ -112,6 +101,8 @@ public class Invoice {
             cs.showText(custName);
             cs.newLine();
             cs.showText(custPh);
+            cs.newLine();
+            cs.showText(cusAddress);
             cs.endText();
 
             cs.beginText();

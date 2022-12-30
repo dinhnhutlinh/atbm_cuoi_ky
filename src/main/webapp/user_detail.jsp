@@ -104,7 +104,7 @@
                                                     <td>${order.getId()}</td>
                                                     <td>
                                                         <c:if test="${order.status==0}">
-                                                            <span class="badge rounded-pill alert-info">Transmission</span>
+                                                            <span class="badge rounded-pill alert-info">Unsigned</span>
                                                         </c:if>
                                                         <c:if test="${order.status==1}">
                                                             <span class="badge rounded-pill alert-danger">Cancel</span>

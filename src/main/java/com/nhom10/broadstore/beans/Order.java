@@ -18,6 +18,7 @@ public class Order {
     private LocalDateTime updateAt;
 
     private List<OrderItem> orderItems;
+    private OrderSignature orderSignature;
 
     public Order() {
     }
@@ -35,6 +36,22 @@ public class Order {
         this.createAt = createAt;
         this.updateAt = updateAt;
         this.orderItems = orderItems;
+    }
+
+    public Order(String id, String customerId, double shipPrice, double total, int status, String name, String phone, String email, String address, LocalDateTime createAt, LocalDateTime updateAt, List<OrderItem> orderItems, OrderSignature orderSignature) {
+        this.id = id;
+        this.customerId = customerId;
+        this.shipPrice = shipPrice;
+        this.total = total;
+        this.status = status;
+        this.name = name;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.createAt = createAt;
+        this.updateAt = updateAt;
+        this.orderItems = orderItems;
+        this.orderSignature = orderSignature;
     }
 
     public String getId() {
@@ -131,6 +148,14 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+
+    public OrderSignature getOrderSignature() {
+        return orderSignature;
+    }
+
+    public void setOrderSignature(OrderSignature orderSignature) {
+        this.orderSignature = orderSignature;
     }
 }
 

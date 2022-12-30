@@ -31,7 +31,7 @@ public class UserGenerateKeyController extends HttpServlet {
             resp.sendRedirect("Login");
             return;
         }
-        req.getRequestDispatcher("user/new_key.jsp").forward(req, resp);
+        req.getRequestDispatcher("new_key.jsp").forward(req, resp);
     }
 
     @Override
