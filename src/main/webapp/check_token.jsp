@@ -66,7 +66,7 @@
                     </div>
                 </c:if>
                 <div class="same">
-                    <form action="check_token" method="post">
+                    <form action="check_token?id=${param.id}" method="post">
                         <p class="nav1">Token</p>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon">@</span>
@@ -77,10 +77,10 @@
                         <p class="nav1">Paste your sign</p>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1">@</span>
-                            <input type="email" class="form-control d-none" placeholder="email" aria-label="email"
-                                   aria-describedby="basic-addon1" name="id">
-                            <input type="email" class="form-control" placeholder="email" aria-label="email"
-                                   aria-describedby="basic-addon1" name="signurate">
+                            <input class="form-control d-none" placeholder="email" aria-label="email"
+                                   aria-describedby="basic-addon1" name="id" value="${param.id}">
+                            <input type="text" class="form-control" placeholder="Signature" aria-label="Signature"
+                                   aria-describedby="basic-addon1" name="signature">
                             <span id="err-mes" class="text-danger d-none">Email esxits</span>
                         </div>
 

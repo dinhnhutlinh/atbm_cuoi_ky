@@ -24,7 +24,7 @@ public interface UserDAO {
     @SqlQuery("select id from user where email = :email AND role=1")
     String getCustomerIDWithMail(@Bind("email") String email);
 
-    @SqlUpdate("insert into user (`id`, `first_name`, `last_name`, `avatar`, `password`, `address`,`phone`, `email`, `create_at`, `update_at`, `active`,role) values (:id, :firstName, :lastName, :avatar, :password, :address ,:phone, :mail, now(), now(), :active,1)")
+    @SqlUpdate("insert into user (`id`, `first_name`, `last_name`, `avatar`, `password`, `address`,`phone`, `email`, `create_at`, `update_at`, `active`,role) values (:id, :firstName, :lastName, :avatar, :password, :address ,:phone, :email, now(), now(), :active,1)")
     int signUpCustomer(@BindBean User user);
 
     @SqlQuery("SELECT * FROM user where role=0")

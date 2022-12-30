@@ -3,7 +3,6 @@ package com.nhom10.broadstore.controllers;
 import com.nhom10.broadstore.beans.User;
 import com.nhom10.broadstore.services.UserService;
 import com.nhom10.broadstore.util.Define;
-import com.nhom10.broadstore.util.SecurityUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -47,17 +46,16 @@ public class UserGenerateKeyController extends HttpServlet {
 
         if (userService.checkPassword(user.getId(), password)) {
             try {
-                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+                KeyPairGenerator keyGen = KeyPairGenerator.getInstance("DSA", "SUN");
                 keyGen.initialize(2048);
                 KeyPair keyPair = keyGen.generateKeyPair();
                 PublicKey publicKey = keyPair.getPublic();
                 PrivateKey privateKey = keyPair.getPrivate();
-
-                File uploads = new File(System.getProperty("upload.location"));
-                File file = new File(uploads, user.getId() + ".priv");
+                File file = new File(user.getId() + ".priv");
+                System.out.println(file.getAbsolutePath());
 
                 PrintWriter writer = new PrintWriter(file, "UTF-8");
-                String privateKeyString = SecurityUtil.base64FromPrivateKey(privateKey);
+                String privateKeyString = Base64.getEncoder().encodeToString(privateKey.getEncoded());
                 writer.write(privateKeyString);
                 writer.close();
 
