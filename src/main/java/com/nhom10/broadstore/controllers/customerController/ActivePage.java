@@ -27,7 +27,7 @@ public class ActivePage extends HttpServlet {
         userService.setActiveCustomer(id, 1);
         KeyPairGenerator keyGen = null;
         try {
-            keyGen = KeyPairGenerator.getInstance("RSA");
+            keyGen = KeyPairGenerator.getInstance("DSA");
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -51,10 +51,8 @@ public class ActivePage extends HttpServlet {
         writer.close();
 
         try {
+            MailHelper.sendMailWithFile("", user.getEmail(), "Private key", file);
 
-            System.out.println(user);
-            MailHelper.sendMailWithFile("id", user.getEmail(), "Private key", file);
-            file.delete();
         } catch (MessagingException e) {
             e.printStackTrace();
         }

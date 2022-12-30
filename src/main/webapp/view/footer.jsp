@@ -26,6 +26,9 @@
                         <ul class="footer-links">
                             <li><a class="dropdown-item" href="Store?cat=all">All products</a></li>
                         </ul>
+                        <ul class="footer-links">
+                            <li><a class="dropdown-item" href="tool/SignatureTool.exe">Download signature tool</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div class="col-md-3 col-xs-6">

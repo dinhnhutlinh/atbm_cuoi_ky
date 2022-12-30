@@ -29,6 +29,7 @@ public class CheckTokenController extends HttpServlet {
         String email = user.getEmail();
 
         String token = Base64.getEncoder().encodeToString((userId + email).getBytes());
+        System.out.println(token);
         req.setAttribute("id", id);
         req.setAttribute("token", token);
         req.getRequestDispatcher("check_token.jsp").forward(req, resp);
@@ -40,17 +41,15 @@ public class CheckTokenController extends HttpServlet {
         User user = userService.findById(req.getParameter("id"));
         String userId = user.getId();
         String email = user.getEmail();
+        System.out.println(signature);
 
         try {
             PublicKey publicKey = SecurityUtil.publicKeyFromBase64(user.getPubKey());
-            boolean isSignatureValid = SecurityUtil.verifySignature(
-                    (userId + email).getBytes(),
-                    Base64.getDecoder().decode(signature),
-                    publicKey
-
+            String token = Base64.getEncoder().encodeToString((userId + email).getBytes());
+            boolean isSignatureValid = SecurityUtil.verifySignature(token.getBytes(), Base64.getDecoder().decode(signature), publicKey
             );
             HttpSession session = req.getSession(true);
-
+            session.setAttribute(Define.userSession, user);
             if (isSignatureValid) {
                 session.setAttribute(Define.userSession, user);
                 if (user.getRole() == 0) {
@@ -60,6 +59,7 @@ public class CheckTokenController extends HttpServlet {
                 }
 
             } else {
+                req.setAttribute("token", token);
                 req.setAttribute("mess", "Signature is invalid!!!");
                 req.getRequestDispatcher("check_token.jsp").forward(req, resp);
             }
