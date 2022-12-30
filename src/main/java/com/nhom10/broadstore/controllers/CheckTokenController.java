@@ -49,7 +49,7 @@ public class CheckTokenController extends HttpServlet {
             boolean isSignatureValid = SecurityUtil.verifySignature(token.getBytes(), Base64.getDecoder().decode(signature), publicKey
             );
             HttpSession session = req.getSession(true);
-            session.setAttribute(Define.userSession, user);
+
             if (isSignatureValid) {
                 session.setAttribute(Define.userSession, user);
                 if (user.getRole() == 0) {

@@ -70,7 +70,7 @@
                                         <h6>Address: <span id="cus_address_text">${user.getAddress()}</span></h6>
                                         </p>
                                         <p>
-                                        <h6>Email: <span id="cus_email_text">${user.getMail()}</span></h6>
+                                        <h6>Email: <span id="cus_email_text">${user.getEmail()}</span></h6>
                                         </p>
                                         <p>
                                         <h6>Number phone: <span id="cus_phone_text">${user.getPhone()}</span></h6>
