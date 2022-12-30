@@ -52,7 +52,7 @@
                                     <li><a class="dropdown-item" href="SignUp">Sign up</a></li>
                                 </c:if>
                                 <c:if test='${userSession!=null}'>
-                                    <c:if test="${userSession.getRole()==Role.ADMIN}">
+                                    <c:if test="${userSession.getRole()==0}">
                                         <li><a class="dropdown-item" href="dashboard">Dashbroad</a></li>
                                     </c:if>
                                     <li><a class="dropdown-item" href="user_detail">Account</a></li>
