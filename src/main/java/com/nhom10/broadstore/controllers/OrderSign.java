@@ -35,6 +35,7 @@ public class OrderSign extends HttpServlet {
 
         File tomcatFolder = new File("/pdf");
         String filePdf = tomcatFolder + "/" + order.getId() + ".pdf";
+        System.out.println(filePdf);
         if (!checkFileContain(filePdf)) {
             createFileInvoice(order, req);
         }
@@ -50,12 +51,15 @@ public class OrderSign extends HttpServlet {
         String signature = req.getParameter("signature").trim();
         if (signature == null || signature.equals("")) {
             req.setAttribute("mess", "signature is not empty");
-            doGet(req, resp);
+//            doGet(req, resp);
+            RequestDispatcher rd = req.getRequestDispatcher("order_sign.jsp");
+            rd.forward(req, resp);
         }
 
         Order order = orderServices.findById(id);
         String application = req.getServletContext().getRealPath("");
-        File tomcatFolder = new File(application + File.separator + "pdf");
+//        application + File.separator + "pdf"
+        File tomcatFolder = new File(application + "pdf");
         String filePdf = tomcatFolder + "/" + order.getId() + ".pdf";
 
         byte[] fileByte = FileUtils.readFileToByteArray(new File(filePdf));
@@ -64,21 +68,26 @@ public class OrderSign extends HttpServlet {
         User user = (User) session.getAttribute(Define.userSession);
         try {
             PublicKey publicKey = SecurityUtil.publicKeyFromBase64(user.getPubKey());
-            boolean isVerify = SecurityUtil.verifySignature(fileByte,
-                    Base64.getDecoder().decode(signature),
-                    publicKey);
+            try {
+                boolean isVerify = SecurityUtil.verifySignature(fileByte,
+                        Base64.getDecoder().decode(signature),
+                        publicKey);
 
-            if (isVerify) {
-                OrderSignature orderSignature = new OrderSignature();
-                orderSignature.setOrderId(id);
-                orderSignature.setSignature(signature);
-                orderSignature.setFile(filePdf);
-                orderServices.signOrder(orderSignature);
+                if (isVerify) {
+                    OrderSignature orderSignature = new OrderSignature();
+                    orderSignature.setOrderId(id);
+                    orderSignature.setSignature(signature);
+                    orderSignature.setFile(filePdf);
+                    orderServices.signOrder(orderSignature);
 
-                req.setAttribute("mess", "order Success");
-                RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
-                rd.forward(req, resp);
-            } else {
+                    req.setAttribute("mess", "order Success");
+                    RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
+                    rd.forward(req, resp);
+                } else {
+                    req.setAttribute("mess", "Signature is invalid");
+                    doGet(req, resp);
+                }
+            } catch (IllegalArgumentException e) {
                 req.setAttribute("mess", "Signature is invalid");
                 doGet(req, resp);
             }
@@ -97,13 +106,16 @@ public class OrderSign extends HttpServlet {
 
     private void createFileInvoice(Order order, HttpServletRequest req) throws IOException {
         String pathInfo = req.getServletContext().getRealPath("");
+        System.out.println("path Info: " + pathInfo);
         Invoice invoice = new Invoice(pathInfo + "/" + "times.ttf");
         invoice.getdata(order);
         String application = req.getServletContext().getRealPath("");
-        File tomcatFolder = new File(application + File.separator + "pdf");
+        System.out.println("tomcatFolder: " + application + File.separator + "pdf");
+        File tomcatFolder = new File(application + "pdf");
         if (!tomcatFolder.exists()) {
             tomcatFolder.mkdirs();
         }
+//        tomcatFolder + File.separator + order.getId() + ".pdf"
         invoice.writeInvoice(tomcatFolder + File.separator + order.getId() + ".pdf");
     }
 

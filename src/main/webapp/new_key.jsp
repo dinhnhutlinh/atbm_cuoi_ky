@@ -57,25 +57,29 @@
                 <div class="text-foget">
                     <p class="text">Enter your password to get key!!!</p>
                 </div>
-                <c:if test='${mess!=null&&mess!=""}'>
-                    <div class="mb-3">
-                        <div class="alert alert-danger" role="alert">${mess}</div>
-                    </div>
-                </c:if>
-                <div class="same">
-                    <form action="forget_password" method="post">
-                        <p class="nav1"> Your password</p>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">@</span>
-                            <input type="password" class="form-control d-none" placeholder="email" aria-label="email"
-                                   aria-describedby="basic-addon1" name="id" value="${param.id}">
-                            <input type="password" class="form-control" placeholder="email" aria-label="email"
-                                   aria-describedby="basic-addon1" name="password">
-                            <span id="err-mes" class="text-danger d-none">Email esxits</span>
-                        </div>
 
+                <div class="same">
+                    <form action="new_key?id=${param.id}" method="post">
+                        <p class="nav1"> Your password</p>
+                        <c:if test="${userSession==null}">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" minlength="6" class="form-control" name="password" id="password"
+                                       placeholder="Forget password">
+                            </div>
+                        </c:if>
+
+                        <c:if test='${mess!=null&&mess!=""}'>
+                            <div class="mb-3">
+                                <div class="alert alert-danger" role="alert">${mess}</div>
+                            </div>
+                        </c:if>
                         <button class="btn btn-orange w-100" type="submit">
-                            Send password
+                            Submit
                         </button>
                     </form>
                 </div>

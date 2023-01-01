@@ -119,19 +119,19 @@
                             <span class="badge rounded-pill alert-info">Unsigned</span>
                         </c:if>
                         <c:if test="${order.status==1}">
-                            <span class="badge rounded-pill alert-danger">Waiting</span>
+                            <span class="badge rounded-pill alert-danger">Cancel</span>
                         </c:if>
                         <c:if test="${order.status==2}">
                             <span class="badge rounded-pill alert-danger">Success</span>
                         </c:if>
                         <c:if test="${order.status==3}">
-                            <span class="badge rounded-pill alert-danger">Cancel</span>
+                            <span class="badge rounded-pill alert-danger">Waiting</span>
                         </c:if>
                     </div>
                     <c:if test="${order.status==0}">
                         <a href="order_sign?id=${param.id}" class="primary-btn order-submit">Sign</a>
                     </c:if>
-                    <c:if test="${order.status==0}">
+                    <c:if test="${order.status==0 || order.status==3}">
                         <a href="cancel_order?id=${order.id}" class="primary-btn order-submit">Cancel order</a>
                     </c:if>
 

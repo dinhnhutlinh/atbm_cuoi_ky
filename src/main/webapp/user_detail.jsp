@@ -112,6 +112,9 @@
                                                         <c:if test="${order.status==2}">
                                                             <span class="badge rounded-pill alert-danger">Success</span>
                                                         </c:if>
+                                                        <c:if test="${order.status==3}">
+                                                            <span class="badge rounded-pill alert-danger">Waiting</span>
+                                                        </c:if>
                                                     </td>
                                                     <td>${order.total}</td>
                                                     <td>${order.phone}</td>
@@ -144,5 +147,4 @@
         <script src="js/cartJS.js"></script>
         <script src="js/cart_controller.js"></script>
 </body>
-
 </html>

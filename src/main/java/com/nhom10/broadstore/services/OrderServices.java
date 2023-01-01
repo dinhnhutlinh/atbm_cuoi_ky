@@ -87,6 +87,6 @@ public class OrderServices {
 
     public void signOrder(OrderSignature orderSignature) {
         connector.useExtension(OrderSignatureDAO.class, handle -> handle.insert(orderSignature));
-        connector.useExtension(OrderDAO.class, handle -> handle.updateStatus(orderSignature.getOrderId(), 1 + ""));
+        connector.useExtension(OrderDAO.class, handle -> handle.updateStatus(orderSignature.getOrderId(), 3 + ""));
     }
 }
