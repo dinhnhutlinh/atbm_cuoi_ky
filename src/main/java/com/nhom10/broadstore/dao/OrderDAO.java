@@ -29,4 +29,7 @@ public interface OrderDAO {
             "`total`=:total,`status`=:status,`name`=:name,`phone`=:phone,`email`=:email," +
             "`update_at`=now() WHERE `id`=:id")
     int update(@BindBean Order order);
+
+    @SqlUpdate("UPDATE `Order` set status =:status where id=:id")
+    void updateStatus(@Bind("id") String id, @Bind("status") String status);
 }

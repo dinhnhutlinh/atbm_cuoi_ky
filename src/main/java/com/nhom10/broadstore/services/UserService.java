@@ -1,7 +1,9 @@
 package com.nhom10.broadstore.services;
 
 import com.nhom10.broadstore.beans.User;
+import com.nhom10.broadstore.beans.UserPubKey;
 import com.nhom10.broadstore.dao.UserDAO;
+import com.nhom10.broadstore.dao.UserPubKeyDAO;
 import com.nhom10.broadstore.db.JDBIConnector;
 import org.jdbi.v3.core.Jdbi;
 
@@ -15,9 +17,10 @@ public class UserService {
     public User login(String email, String password) throws GeneralSecurityException {
         return connector.withExtension(UserDAO.class, handle -> {
             User user;
-            if ((user = handle.loginAdmin(email, password)) != null)
-                return user;
             String hashPassCustomer = PasswordHash.createHash(password);
+            if ((user = handle.loginAdmin(email, hashPassCustomer)) != null)
+                return user;
+
             user = handle.loginCustomer(email, hashPassCustomer);
             return user;
         });
@@ -95,6 +98,14 @@ public class UserService {
     public void updatePublicKey(String id, String publicKeyString) {
         connector.useExtension(UserDAO.class
                 , handle -> handle.updatePublicKey(id, publicKeyString));
+        connector.useExtension(UserPubKeyDAO.class, handle -> {
+            UserPubKey userPubKey = new UserPubKey();
+            userPubKey.setPubKey(publicKeyString);
+            userPubKey.setUserId(id);
+            userPubKey.setStatus(0);
+            handle.setKeyOld(id);
+            handle.insert(userPubKey);
+        });
     }
 
     public User findById(String parseInt) {

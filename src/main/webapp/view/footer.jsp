@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!-- FOOTER -->
 <footer id="footer">
@@ -29,6 +30,13 @@
                         <ul class="footer-links">
                             <li><a class="dropdown-item" href="tool/SignatureTool.exe">Download signature tool</a></li>
                         </ul>
+                        <c:if test="${userSession==null}">
+                            <ul class="footer-links">
+                                <li><a class="dropdown-item" href="new_key?id=${userSession.getId()}">Forget
+                                    your key</a></li>
+                            </ul>
+                        </c:if>
+
                     </div>
                 </div>
                 <div class="col-md-3 col-xs-6">

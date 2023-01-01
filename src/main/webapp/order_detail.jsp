@@ -24,7 +24,7 @@
 
 
     <!-- Font Awesome Icon -->
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Custom stlylesheet -->
     <link type="text/css" rel="stylesheet" href="css/style.css"/>
@@ -75,16 +75,16 @@
                         </div>
                         <div class="mb-3">
                             <input class="form-control" type="email" name="email" placeholder="Email"
-                                   value="${order.email}">
+                                   value="${order.email}" disabled>
                         </div>
                         <div class="mb-3">
                             <input class="form-control" type="tel" name="phone" placeholder="Number phone"
-                                   value="${order.phone}">
+                                   value="${order.phone}" disabled>
                         </div>
 
                         <div class="mb-3">
                             <input class="form-control" type="text" name="address" placeholder="Building, Street..."
-                                   value="${order.address}">
+                                   value="${order.address}" disabled>
                         </div>
                     </div>
                     <!-- /Billing Details -->
@@ -116,7 +116,7 @@
                             <div><strong class="order-total">${order.total+order.shipPrice}</strong></div>
                         </div>
                         <c:if test="${order.status==0}">
-                            <span class="badge rounded-pill alert-info">Transmission</span>
+                            <span class="badge rounded-pill alert-info">Unsigned</span>
                         </c:if>
                         <c:if test="${order.status==1}">
                             <span class="badge rounded-pill alert-danger">Cancel</span>
@@ -124,8 +124,14 @@
                         <c:if test="${order.status==2}">
                             <span class="badge rounded-pill alert-danger">Success</span>
                         </c:if>
+                        <c:if test="${order.status==3}">
+                            <span class="badge rounded-pill alert-danger">Waiting</span>
+                        </c:if>
                     </div>
                     <c:if test="${order.status==0}">
+                        <a href="order_sign?id=${param.id}" class="primary-btn order-submit">Sign</a>
+                    </c:if>
+                    <c:if test="${order.status==0 || order.status==3}">
                         <a href="cancel_order?id=${order.id}" class="primary-btn order-submit">Cancel order</a>
                     </c:if>
 

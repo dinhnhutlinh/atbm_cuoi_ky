@@ -78,9 +78,10 @@ public class CheckOutPage extends HttpServlet {
                 CartService cartService = new CartService();
                 cartService.setCartEmpty(cart);
 
-                req.setAttribute("mess", "Order success");
-                RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
-                rd.forward(req, resp);
+//                req.setAttribute("mess", "Order success");
+//                RequestDispatcher rd = req.getRequestDispatcher("success.jsp");
+//                rd.forward(req, resp);
+                resp.sendRedirect("order_sign?id=" + order.getId());
                 return;
             } else {
                 req.setAttribute("mess", "Some item is out of stock");

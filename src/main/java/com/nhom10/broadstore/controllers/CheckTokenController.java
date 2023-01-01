@@ -41,7 +41,11 @@ public class CheckTokenController extends HttpServlet {
         User user = userService.findById(req.getParameter("id"));
         String userId = user.getId();
         String email = user.getEmail();
-        System.out.println(signature);
+        if (signature == null || signature.equals("")) {
+            req.setAttribute("mess", "Signature is invalid!!!");
+            doGet(req, resp);
+            return;
+        }
 
         try {
             PublicKey publicKey = SecurityUtil.publicKeyFromBase64(user.getPubKey());
@@ -59,12 +63,11 @@ public class CheckTokenController extends HttpServlet {
                 }
 
             } else {
-                req.setAttribute("token", token);
                 req.setAttribute("mess", "Signature is invalid!!!");
-                req.getRequestDispatcher("check_token.jsp").forward(req, resp);
+                doGet(req, resp);
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | SignatureException | NoSuchProviderException |
-                 InvalidKeyException e) {
+                InvalidKeyException e) {
             req.getRequestDispatcher("check_token.jsp").forward(req, resp);
         }
     }

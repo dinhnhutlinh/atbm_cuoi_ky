@@ -104,13 +104,16 @@
                                                     <td>${order.getId()}</td>
                                                     <td>
                                                         <c:if test="${order.status==0}">
-                                                            <span class="badge rounded-pill alert-info">Transmission</span>
+                                                            <span class="badge rounded-pill alert-info">Unsigned</span>
                                                         </c:if>
                                                         <c:if test="${order.status==1}">
                                                             <span class="badge rounded-pill alert-danger">Cancel</span>
                                                         </c:if>
                                                         <c:if test="${order.status==2}">
                                                             <span class="badge rounded-pill alert-danger">Success</span>
+                                                        </c:if>
+                                                        <c:if test="${order.status==3}">
+                                                            <span class="badge rounded-pill alert-danger">Waiting</span>
                                                         </c:if>
                                                     </td>
                                                     <td>${order.total}</td>
@@ -144,5 +147,4 @@
         <script src="js/cartJS.js"></script>
         <script src="js/cart_controller.js"></script>
 </body>
-
 </html>

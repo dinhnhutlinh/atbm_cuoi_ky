@@ -2,9 +2,11 @@ package com.nhom10.broadstore.services;
 
 import com.nhom10.broadstore.beans.Order;
 import com.nhom10.broadstore.beans.OrderItem;
+import com.nhom10.broadstore.beans.OrderSignature;
 import com.nhom10.broadstore.beans.Product;
 import com.nhom10.broadstore.dao.OrderDAO;
 import com.nhom10.broadstore.dao.OrderItemDAO;
+import com.nhom10.broadstore.dao.OrderSignatureDAO;
 import com.nhom10.broadstore.dao.ProductDAO;
 import com.nhom10.broadstore.db.JDBIConnector;
 import org.jdbi.v3.core.Jdbi;
@@ -77,8 +79,14 @@ public class OrderServices {
                 handle -> handle.findByOrderId(order.getId()).stream()
                         .map(orderItem -> mapOrderItem(orderItem)).collect(Collectors.toList()));
         order.setOrderItems(orderItems);
+        OrderSignature orderSignature = connector.withExtension(OrderSignatureDAO.class, handle -> handle.findByOrderId(order.getId()));
+        order.setOrderSignature(orderSignature);
         return order;
     }
 
 
+    public void signOrder(OrderSignature orderSignature) {
+        connector.useExtension(OrderSignatureDAO.class, handle -> handle.insert(orderSignature));
+        connector.useExtension(OrderDAO.class, handle -> handle.updateStatus(orderSignature.getOrderId(), 3 + ""));
+    }
 }
