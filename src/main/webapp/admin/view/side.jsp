@@ -80,6 +80,14 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="admin_keys">
+            <span class="icon">
+              <i class="fas fa-key"></i>
+            </span>
+                    <span class="text">Key</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="admin_admin">
             <span class="icon">
               <i class="fas fa-users-cog"></i>
