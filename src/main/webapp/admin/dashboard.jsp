@@ -129,7 +129,7 @@
                                     <tr>
                                         <td>${customer.getId()}</td>
                                         <td>${customer.getName()}</td>
-                                        <td>${customer.getMail()}</td>
+                                        <td>${customer.getEmail()}</td>
                                         <td>${customer.getPhone()}</td>
                                     </tr>
                                 </c:forEach>
